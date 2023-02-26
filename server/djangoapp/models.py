@@ -10,6 +10,7 @@ from django.conf import settings
 import uuid
 
 class CarMake(models.Model):
+    # id = models.BigAutoField(primary_key=True)
     name = models.CharField(null = False, max_length=25)
     description = models.CharField(null = True, max_length=500)
 
@@ -35,7 +36,7 @@ class CarModel(models.Model):
     def __str__(self):
         return "Name: "+ self.name + \
                 " Make Name: "+ self.make.name + \
-                " Type: " + self.c_type + \
+                " Type: " + self.car_type + \
                 " Dealer ID: " + str(self.dealer_id)+ \
                 " Year: " + str(self.year)
 

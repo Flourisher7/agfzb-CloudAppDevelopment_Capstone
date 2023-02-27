@@ -2,6 +2,9 @@ import requests
 import json
 from .models import CarDealer, DealerReview
 from requests.auth import HTTPBasicAuth
+from ibm_cloud_sdk_core.authenticators import IAMAuthenticator
+from ibm_watson import NaturalLanguageUnderstandingV1
+from ibm_watson.natural_language_understanding_v1 import Features,SentimentOptions
 
 
 # Create a `get_request` to make HTTP GET requests
@@ -104,13 +107,16 @@ def get_dealer_reviews_from_cf(url, id):
             print("&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&")
 
             if dealer_review["doc"]["dealership"] == id:
+                sentiment = analyze_review_sentiments(dealer_review["doc"]["review"])
                 review_obj = DealerReview(dealership=dealer_review["doc"]["dealership"],
                                           name=dealer_review["doc"]["name"],
                                           purchase=dealer_review["doc"]["purchase"],
                                           review=dealer_review["doc"]["review"], purchase_date=dealer_review["doc"]["purchase_date"],
                                           car_make=dealer_review["doc"]["car_make"], car_model=dealer_review["doc"]["car_model"],
-                                          car_year=dealer_review["doc"]["car_year"], id=dealer_review["doc"]["id"])
-                sent
+                                          car_year=dealer_review["doc"]["car_year"], 
+                                          sentiment=sentiment, id=dealer_review["doc"]["id"])
+                
+                print(sentiment)
                 results.append(review_obj)
     return results
 
